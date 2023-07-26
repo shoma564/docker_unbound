@@ -1,0 +1,10 @@
+/etc/unbound/log/unbound.log { # 対象のログファイル
+    ifempty            # ログファイルが空でもローテーションする
+    dateformat .%Y%m%d # dateフォーマットを任意のものに変更する
+    missingok          # ログファイルがなくてもエラーを出さない
+    compress           # 圧縮する
+    rotate 10          # 10世代分古いログを残す
+    postrotate         # ローテート後にsyslogを再起動
+/bin/kill -HUP `cat /var/run/syslogd.pid 2> /dev/null` 2> /dev/null || true
+endscript
+}

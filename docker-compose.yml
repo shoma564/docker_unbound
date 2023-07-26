@@ -1,0 +1,31 @@
+version: "3.9"
+services:
+  unbound:
+    build: .
+    image: unbound-alma:1.0.0
+    container_name: unbound
+    tty: true
+
+    networks:
+      vlan0:
+        ipv4_address: 172.24.20.205
+    volumes:
+      - unbound:/etc/unbound/log/
+#       - ./log:/etc/unbound/log/
+
+
+networks:
+  vlan0:
+    name: vlan0
+    driver: macvlan
+    driver_opts:
+      parent: enp1s0
+    ipam:
+      config:
+        - subnet: 172.24.20.0/24
+          gateway: 172.24.20.254
+
+
+volumes:
+  unbound:
+    external: true
